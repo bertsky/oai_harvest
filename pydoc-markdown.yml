@@ -1,0 +1,23 @@
+loaders:
+  - type: python
+    search_path: [.]
+    # modules: [__main__]
+    packages: [oai_harvest]
+processors:
+  - type: filter
+  - type: smart
+  - type: crossref
+  - type: google
+renderer:
+  type: markdown
+  descriptive_class_title: false
+  render_toc: false
+  render_module_header: false
+  signature_with_decorators: false
+  docstrings_as_blockquote: false
+  signature_code_block: true
+  signature_in_header: false
+  add_module_prefix: false
+  code_headers: false
+  insert_header_anchors: true
+  filename: README.md

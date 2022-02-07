@@ -15,7 +15,7 @@ renderer:
   render_module_header: false
   signature_with_decorators: false
   docstrings_as_blockquote: false
-  signature_code_block: true
+  signature_code_block: false
   signature_in_header: false
   add_module_prefix: false
   code_headers: false

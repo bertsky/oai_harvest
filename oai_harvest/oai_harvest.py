@@ -91,8 +91,6 @@ def harvest(
     """simple oai harvesting module
     utilizing [sickle](https://github.com/mloesch/sickle)
 
-    command line usage: `oai-harvest --help`
-
     Args:
         endpoint (str, required): Endpoint of the oai interface. Defaults to None.
         ignore_deleted (bool, optional): Flag to wether ignore deleted records '(\<header status="deleted"\>)' or not. Defaults to False.

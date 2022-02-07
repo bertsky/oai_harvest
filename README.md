@@ -1,10 +1,26 @@
+<a id="oai_harvest.cli.cli"></a>
+
+#### cli
+
+##### oai harvest command line interface
+
+###### installation:
+
+`python3 -m pip install git+https://git.slub-dresden.de/gersch/oai_harvest --user`
+
+###### synopsis:
+
+`oai-harvest --help`
+
+`oai-harvest
+--endpoint 'https://base-oai.ubl-proxy.slub-dresden.de/oai'
+--oai-set 'collection:ftjcie AND autoclasscode:(302 OR 110)'
+--metadata-prefix base_dc
+--harvest-dir .`
+
 <a id="oai_harvest.oai_harvest.harvest"></a>
 
 #### harvest
-
-```python
-def harvest(endpoint=None, ignore_deleted=False, encoding="UTF-8", max_retries=5, metadata_prefix="dc", oai_set=None, harvest_from=None, harvest_until=None, date=None, source_name=None, harvest_dir=None, chunk_size=10000, chunk_node_name=None, chunk_node_default_ns=None, chunk_node_ns=None)
-```
 
 simple oai harvesting module
 utilizing [sickle](https://github.com/mloesch/sickle)

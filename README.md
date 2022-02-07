@@ -25,8 +25,6 @@
 simple oai harvesting module
 utilizing [sickle](https://github.com/mloesch/sickle)
 
-command line usage: `oai-harvest --help`
-
 **Arguments**:
 
 - `endpoint` _str, required_ - Endpoint of the oai interface. Defaults to None.

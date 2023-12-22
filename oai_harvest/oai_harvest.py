@@ -175,6 +175,7 @@ def harvest(
                 _prep_chunk(**prep_chunk_args)
                 record_total += len(chunk)
                 chunk = set()
+                prep_chunk_args["chunk"] = chunk
                 prep_chunk_args["chunk_num"] = prep_chunk_args["chunk_num"]+1
 
             chunk.add(r)

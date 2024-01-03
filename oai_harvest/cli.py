@@ -7,58 +7,64 @@ from oai_harvest.oai_harvest import harvest
 
 logger = logging.getLogger(__name__)
 
-@click.command()
+@click.command(context_settings=dict(show_default=True))
 @click.option(
     "--endpoint",
-    help="endpoint of the oai interface",
+    help="endpoint of the OAI interface",
     required=True)
 @click.option(
     "--ignore-deleted",
     help=("flag to wether ignore deleted records " +
-          "(<header status=\"deleted\">) or not"),
-    is_flag=False)
+          "(<header status=\"deleted\">)"),
+    is_flag=True)
 @click.option(
     "--encoding",
-    help=("override the servers encoding, " +
-          "'request' will fallback to 'ISO-8859-1' default is 'UTF-8'"),
+    help=("override the servers encoding, "),
     default="UTF-8")
 @click.option(
     "--max-retries",
-    help="number of retry attempts if an http request fails (default is 5)",
+    help="number of retry attempts if an http request fails",
     default=5)
 @click.option(
     "--metadata-prefix",
-    help=("oai pmh parameter metadata prefix (default is 'dc') " +
-          "'http://www.openarchives.org/OAI/openarchivesprotocol.html#MetadataNamespaces'"),
+    help=("OAI PMH parameter 'metadataPrefix' " +
+          "(http://www.openarchives.org/OAI/openarchivesprotocol.html#MetadataNamespaces), " +
+          "i.e. metadata format"),
     default="dc")
 @click.option(
     "--oai-set",
-    help=("oai pmh parameter set" +
-          "'http://www.openarchives.org/OAI/openarchivesprotocol.html#Set'"),
+    help=("OAI PMH parameter 'set'" +
+          "(http://www.openarchives.org/OAI/openarchivesprotocol.html#Set)"),
     required=True)
 @click.option(
     "--harvest-from",
-    help=("oai pmh parameter from, harvesting start datestamp " +
-          "'http://www.openarchives.org/OAI/openarchivesprotocol.html#SelectiveHarvestingandDatestamps'"))
+    metavar="DATE",
+    help=("OAI PMH parameter 'from' " +
+          "(http://www.openarchives.org/OAI/openarchivesprotocol.html#SelectiveHarvestingandDatestamps), " +
+          "i.e. harvesting start"))
 @click.option(
     "--harvest-until",
-    help=("oai pmh parameter until, harvesting end datestamp " +
-          "'http://www.openarchives.org/OAI/openarchivesprotocol.html#SelectiveHarvestingandDatestamps'"))
+    metavar="DATE",
+    help=("OAI PMH parameter 'until' " +
+          "(http://www.openarchives.org/OAI/openarchivesprotocol.html#SelectiveHarvestingandDatestamps), " +
+          "i.e. harvesting end"))
 @click.option(
     "--date",
-    help="default is current date ('%Y-%m-%dT%H:%M:%SZ')",
+    metavar="DATE",
+    help="ISO 8601 formatted date stamp",
     default=datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"))
 @click.option(
     "--source-name",
-    help="name to define the current harvesting source (default uuid)",
+    help="name to define the current harvesting source",
     default=str(uuid.uuid4())[:8])
 @click.option(
     "--harvest-dir",
+    metavar="PATH",
     help="path to the harvesting target dir",
     required=True)
 @click.option(
     "--chunk-size",
-    help="max number of records per chunk file (default 10.000)",
+    help="max number of records per chunk file",
     default=10000)
 @click.option(
     "--chunk-node-name",
@@ -68,27 +74,13 @@ logger = logging.getLogger(__name__)
     "--chunk-node-default-ns",
     help="default namespace of the chunk xml doc")
 @click.option(
-    "-chunk-node-ns",
+    "--chunk-node-ns",
+    metavar="DICT",
     help=("additional namespace attributes of the " +
           "chunk xml doc the string json object"))
-def cli(
-    endpoint="https://base-oai.ubl-proxy.slub-dresden.de/oai",
-    ignore_deleted=False,
-    encoding="UTF-8",
-    max_retries=5,
-    metadata_prefix="base_dc",
-    oai_set="collection:ftjcie AND autoclasscode:(302 OR 110)",
-    harvest_from=None,
-    harvest_until=None,
-    date=None,
-    source_name=None,
-    harvest_dir="./_resources",
-    chunk_size=1,
-    chunk_node_name="Records",
-    chunk_node_default_ns=None,
-    chunk_node_ns=None):
+def cli(**kwargs):
     """
-    ##### oai harvest command line interface
+    ##### OAI harvest command line interface
 
     ###### installation:
 
@@ -98,6 +90,7 @@ def cli(
 
     `oai-harvest --help`
 
+    \b
     `oai-harvest
         --endpoint 'https://base-oai.ubl-proxy.slub-dresden.de/oai'
         --oai-set 'collection:ftjcie AND autoclasscode:(302 OR 110)'
@@ -124,23 +117,7 @@ def cli(
 
     logging.config.dictConfig(logging_config)
 
-    complete_list_size, record_total = harvest(
-        endpoint=endpoint,
-        ignore_deleted=ignore_deleted,
-        encoding=encoding,
-        max_retries=max_retries,
-        metadata_prefix=metadata_prefix,
-        oai_set=oai_set,
-        harvest_from=harvest_from,
-        harvest_until=harvest_until,
-        chunk_size=chunk_size,
-        chunk_node_name=chunk_node_name,
-        chunk_node_default_ns=chunk_node_default_ns,
-        chunk_node_ns=chunk_node_ns,
-        date=date,
-        source_name=source_name,
-        harvest_dir=harvest_dir)
-
+    complete_list_size, record_total = harvest(**kwargs)
     assert complete_list_size == record_total, f"{complete_list_size} \u2260 {record_total}"
 
     logger.info(f"{complete_list_size} == {record_total}")

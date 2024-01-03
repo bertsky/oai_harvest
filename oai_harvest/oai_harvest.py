@@ -10,16 +10,16 @@ from lxml import etree as ET
 logger = logging.getLogger(__name__)
 
 def _prep_chunk(
-    chunk,
-    chunk_num,
-    harvest_dir,
-    source_name,
-    date,
-    oai_set,
-    ignore_deleted,
-    chunk_node_name,
-    chunk_node_default_ns,
-    chunk_node_ns):
+        chunk=None,
+        chunk_num=None,
+        harvest_dir=None,
+        source_name=None,
+        date=None,
+        oai_set=None,
+        ignore_deleted=None,
+        chunk_node_name=None,
+        chunk_node_default_ns=None,
+        chunk_node_ns=None):
     """prep chunk doc xml and related chunk file"""
     save_set = ""
     if oai_set:
